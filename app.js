@@ -1,75 +1,42 @@
-let listaDeNomes = ['Aline', 'Marcel', 'Ariana'];
+/************************************************************************************************************************************************************************
+ * OBjetivo: Arquivo responsável pela API de livros (GET, POST, PUT e DELETE)
+ * data 11/11/2025
+ * Autor: Aline Alves de Souza
+ * Versão: 1.0 
+ ************************************************************************************************************************************************************************/
+//9° instalar express e cors e habilitar porta do servidor
+const express = require('express')
 
-// typeof diz o tipo se eh objeto,  string number
-console.log(typeof(listaDeNomes[2]));
-console.log(typeof(listaDeNomes));
-console.log(listaDeNomes);
+// cors responsável pelas regras permições da api
+const cors    = require('cors')
 
-//push adiciona um elemento no final da array
-listaDeNomes.push('mateus');
-console.log(listaDeNomes);
+const app     = express()
 
-//unshift acrescenta elemento no começo do array
-listaDeNomes.unshift('Rebeca');
-console.log(listaDeNomes);
+//Define a porta a ser utilizada nas requisições da API (Servidor ou uma porta local 8080)
+const PORT = process.PORT || 8080
 
-//pop remove o ultimo elemento da array
-listaDeNomes.pop();
-console.log(listaDeNomes);
+//10° Configuração do cors
+// Coloco duas informacoes importantes no header (cabeçalho) da minha API , 1° de onde vão vir minhas requisiçoes, 2 
+app.use((request, response, next) => {
+    response.header('Access-Control-Allow-Origin', '*') // no lugar do asteristico colocaria o endereço do meu servidor 'http://200.100.50.10' IP  do srvidor // ou link do servidor
+    response.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS')
 
-//shift remove o primeiro elemento da array
-listaDeNomes.shift();
-console.log(listaDeNomes);
+    app.use(cors())
+    next()
+})
 
-//contar quantidade de elementos numa array
-let qtdeItens = listaDeNomes.length;
-console.log(qtdeItens);
+//11° cria uma variavel para receber o import dos arquivos de controle da aplicação
+// aqui cria endpoints de livros,  autores, generos, para cada tabela tem que fazer seu controller
+const controllerLivro = require('./controller/livro/controller_livro')
 
+//12° EndPoints As rotas da API
+// endpoints se comunica com a controller e pega o que a controler devolve e retorna na minha requuisição
+app.get('/v1/livraria/livro', cors(), async function(request, response) {
+    let livro = await controllerLivro.listarLivros()
+    response.status(livro.status_code)
+    response.json(livro)
+})
 
-// Estruturas de Repetição
-//while
-
-listaDeNomes.unshift('laisa','Ana', 'Larissa', 'Henrique', 'leonid','Celso', 'Julio', 'Miguel');
-let cont = 0;
-
-while(cont <=10){
-    console.log("O nome do Cliente é " + listaDeNomes[cont]);
-    cont++;
-}
-
-
-//for
-
-for(cont = 0; cont< listaDeNomes.length; cont++){
-    console.log(listaDeNomes[cont]);
-}
-
-//forEach
-
-console.log("\n Exibindo dados com ForEach \n");
-listaDeNomes.forEach(function(item){
-    console.log('O nome do cliente é : ' + item);
-});
-
-
-// Retorna o índice do elemento encontrado, caso nao encontre retorna -1
-let indice = listaDeNomes.indexOf('Larissa'); 
-console.log(indice);
-
-// Realiza um processo de cópia(clone de um array)
-let novoArray = listaDeNomes.slice();
-console.log(novoArray);
-
-// metodod splice (2,2) indice 2, apague 2 elementos  permite apagar array pelo indice e a quantidadde
-novoArray.splice(2,2);
-console.log(novoArray);
-
-// json
-
-//{tem que estar entre chaves  e atributo : valor}
-
-let listaDeProdutos = [
-    {nome: 'Teclado', descricao: 'Teclado RGB', qtde: 200, valor: 100},
-    {nome: 'Mouse', descricao: 'Mouse Preto', qtde: 20, valor: 50}
-];
-console.log(listaDeProdutos);
+app.listen(PORT, function(){
+    console.log('API aguardando requisições...')
+})

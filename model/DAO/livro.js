@@ -60,3 +60,9 @@ const setUpdateBook = async function (livro) {
 const setDeleteBokk = async function (livro) {
     
 }
+
+//7° colocar a funcao publica
+
+module.exports = {
+    getSelectAllBooks
+}
