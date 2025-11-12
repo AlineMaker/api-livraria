@@ -34,7 +34,7 @@ const getSelectAllBooks = async function () {
     else
     return false;
 }
-console.log(getSelectAllBooks);
+
 //4° instala prisma
 //npm install prisma --save
 //npm install @prisma/client --save
@@ -52,7 +52,7 @@ const getSelectBookById = async (id) => {
     else
         return false;
 }
-console.log(getSelectBookById(1));
+
 
 //console.log(getSelectBookById(2));
 
