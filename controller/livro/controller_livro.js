@@ -24,10 +24,10 @@ const listarLivros = async function() {
         if(result){
           
             //validacao de array vazio
-            if(result.lenght > 0){
+            if(result.length > 0){
                 //12° livrojson
                 let livroJson 
-                return {status: true, status_code: 200, response: result };
+                return {status: true, status_code: 200, items: result.length, response: result };
             }
             else{                
                 return {status: false, status_code: 404, message: 'Não foram encontrados dados de retorno.'}
@@ -39,9 +39,33 @@ const listarLivros = async function() {
 
 
 //Retorna um livro filtrando pelo ID
-const buscarLivroId = async function (id) {
+const buscarLivroId = async function(id) {
     
+
+    if (id != '' && id != null && id != undefined && !isNaN(id) && id > 0) {
+        //Preserva o argumento e o transforma em inteiro
+        
+        let result = await livroDAO.getSelectBookById(Number(id));
+
+        if(result){
+          
+            //validacao de array vazio
+            if(result.length > 0){
+                //12° livrojson
+                let livroJson 
+                return {status: true, status_code: 200, items: result.length, response: result };
+            }
+            else{                
+                return {status: false, status_code: 404, message: 'Não foram encontrados dados de retorno.'}
+            }
+        }else{
+            return {status: false, status_code: 500, message: 'Não foi possível processar a requisição pois houveram falhas no servidor. '}
+        }
 }
+}
+    
+    
+
 
 //Insere um livro
 const inserirLivro = async function (livro) {
@@ -60,5 +84,6 @@ const excluirLivro = async function (id) {
 
 
 module.exports = {
-    listarLivros
+    listarLivros,
+    buscarLivroId
 }

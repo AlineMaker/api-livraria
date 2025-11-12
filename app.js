@@ -23,7 +23,7 @@ app.use((request, response, next) => {
 
     app.use(cors())
     next()
-})
+});
 
 //11° cria uma variavel para receber o import dos arquivos de controle da aplicação
 // aqui cria endpoints de livros,  autores, generos, para cada tabela tem que fazer seu controller
@@ -35,8 +35,17 @@ app.get('/v1/livraria/livro', cors(), async function(request, response) {
     let livro = await controllerLivro.listarLivros()
     response.status(livro.status_code)
     response.json(livro)
-})
+});
+
+
+app.get('/v1/livraria/livro/:id', cors(), async function(request, response) {
+    let idLivro = request.params.id;
+   let livro =  await controllerLivro.buscarLivroId(idLivro);
+   
+    response.status(livro.status_code)
+    response.json(livro)
+});
 
 app.listen(PORT, function(){
     console.log('API aguardando requisições...')
-})
+});

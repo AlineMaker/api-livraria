@@ -27,23 +27,34 @@ const prisma = new PrismaClient()
 const getSelectAllBooks = async function () {
     let sql = `select * from tbl_livro`
 
-    let result = await prisma.$queryRawUnsafe(sql)
+    let result = await prisma.$queryRawUnsafe(sql);
 
     if(result)
         return result;
     else
     return false;
 }
-
+console.log(getSelectAllBooks);
 //4° instala prisma
 //npm install prisma --save
 //npm install @prisma/client --save
 //npx prisma init
 
 // Retorna um livro pelo ID
-const getSelectBookById = async function (id) {
-    
+const getSelectBookById = async (id) => {
+
+    let sql = `select * from tbl_livro where id = ${id}`;
+
+    let result = await prisma.$queryRawUnsafe(sql);
+   
+    if (Array.isArray(result))
+        return result;
+    else
+        return false;
 }
+console.log(getSelectBookById(1));
+
+//console.log(getSelectBookById(2));
 
 //Insere um novo livro 
 
@@ -64,5 +75,7 @@ const setDeleteBokk = async function (livro) {
 //7° colocar a funcao publica
 
 module.exports = {
-    getSelectAllBooks
+    getSelectAllBooks,
+    getSelectBookById
+
 }
