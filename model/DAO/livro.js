@@ -7,7 +7,7 @@
 //2° Incluir uma biblioteca do Node.js que faça integração com a base de Dados(Prisma)
 
 //  Import Prisma 
-const { PrismaClient} = require('@prisma/client')
+const { PrismaClient } = require('../../generated/prisma')
 
 //Cria um novo objeto para manipular as transações com Banco de Dados
 const prisma = new PrismaClient()
